@@ -400,6 +400,7 @@ class WaveClipper extends CustomClipper<Path> {
     path.quadraticBezierTo(
         secondStart.dx, secondStart.dy, secondEnd.dx, secondEnd.dy);
 
+
     path.lineTo(
         size.width, 0); //end with this path if you are making wave at bottom
     path.close();
