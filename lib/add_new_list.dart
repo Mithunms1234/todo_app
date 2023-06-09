@@ -17,13 +17,34 @@ class _AddEditState extends State<AddEdit> {
   TextEditingController title = TextEditingController();
   TextEditingController contents = TextEditingController();
 
+  @override
+  void initState() { //to run this functions at the starting of this page
+    super.initState();
+    monthNow();
+    // print(".............$shared_pref");
+  }
+
+  var letterMonth;
+  var dates;
+  monthNow() {
+    DateTime currentMonth = DateTime.now();
+    String? letterMonthD;
+    List<String> monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    letterMonthD = monthNames[currentMonth.month];
+    DateTime currentDate = DateTime.now();
+    int DatesD = currentDate.day;
+    letterMonth = letterMonthD;
+    dates = DatesD;
+  }
+
   save()async
   {
     SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
     var id =await sharedPreferences.getString("id");  //sharedpreference get data
     FirebaseFirestore.instance
         .collection("notes")
-        .add({"Title": title.text, "Content": contents.text, "id": id});
+        .add({"Title": title.text, "Content": contents.text, "id": id, "date": dates, "month": letterMonth});
     return  Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => home_note()),

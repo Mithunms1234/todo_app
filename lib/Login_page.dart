@@ -19,10 +19,6 @@ class _LoginState extends State<Login> {
   TextEditingController pass = TextEditingController();
   TextEditingController name = TextEditingController();
 
-
-
-
-
   // getId()
   // async {
   //   var Dataget = await FirebaseFirestore.instance.collection("notes").get();
@@ -35,7 +31,6 @@ class _LoginState extends State<Login> {
   //   print(documentIds);
   //
   // }
-
 
   Check_name() {
     // print("........................................$name");
@@ -102,8 +97,7 @@ var SignId ;
     var sighupId =  await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.text, password: pass.text);
      var details =  await FirebaseFirestore.instance
-          .collection("login")
-          .add({"email": email.text,"name": name.text,"id":sighupId.user!.uid} );
+          .collection("login").add({"email": email.text,"name": name.text,"id":sighupId.user!.uid} );
 
         SignId  = sighupId.user!.uid;
     SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
@@ -113,7 +107,6 @@ var SignId ;
       setState(() {
         LoginSignUp = false;
       });
-
     } on FirebaseAuthException catch (e) {
       String error = e.toString();
       if (error

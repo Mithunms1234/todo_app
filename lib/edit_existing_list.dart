@@ -20,9 +20,25 @@ class _EditListState extends State<EditList> {
   TextEditingController title = TextEditingController();
   TextEditingController contents = TextEditingController();
 
+
+
+  var letterMonth;
+  var dates;
+  monthNow() {
+    DateTime currentMonth = DateTime.now();
+    String? letterMonthD;
+    List<String> monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    letterMonthD = monthNames[currentMonth.month];
+    DateTime currentDate = DateTime.now();
+    int DatesD = currentDate.day;
+    letterMonth = letterMonthD;
+    dates = DatesD;
+  }
+
   void save()
    {
-     FirebaseFirestore.instance.collection("notes").doc(widget.id).update({"Title": title.text, "Content": contents.text});
+     FirebaseFirestore.instance.collection("notes").doc(widget.id).update({"Title": title.text, "Content": contents.text,"date": dates, "month": letterMonth});
      Navigator.push(
          context,
          MaterialPageRoute(builder: (context) => home_note())
@@ -35,6 +51,7 @@ class _EditListState extends State<EditList> {
     contents.text = widget.content.toString();
     // TODO: implement initState
     super.initState();
+    monthNow();
   }
 
 

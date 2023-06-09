@@ -35,9 +35,11 @@ class _home_noteState extends State<home_note> {
   }
 
   Future<void> fullFunction() async {
+
     await fchFireBaseNote();
     await fchFireBaseLogin();
     titleContent();
+
   }
 
   Future<void>
@@ -75,6 +77,8 @@ class _home_noteState extends State<home_note> {
   List<String> title = [];
   List<String> content = [];
   List<String> id = [];
+  List<int> date = [];
+  List<String> month = [];
 
   void titleContent() {
     noteList.forEach((element) {
@@ -82,47 +86,17 @@ class _home_noteState extends State<home_note> {
         setState(() {
           title.add(element.data()["Title"]);
           content.add(element.data()["Content"]);
+          date.add(element.data()["date"]);
+          month.add(element.data()["month"]);
           id.add(element.id);
         });
 
-        print(".........................${element["Content"]}");
+        print(".........................${element["date"]}");
       }
     });
   }
 
-  month() {
-    DateTime currentDate = DateTime.now();
-    int currentMonth = currentDate.month;
-    String? letterMonth;
 
-    if (currentMonth == 1) {
-      letterMonth = "Jan";
-    } else if (currentMonth == 2) {
-      letterMonth = "Feb";
-    } else if (currentMonth == 3) {
-      letterMonth = "Mar";
-    } else if (currentMonth == 4) {
-      letterMonth = "Apr";
-    } else if (currentMonth == 5) {
-      letterMonth = "May";
-    } else if (currentMonth == 6) {
-      letterMonth = "Jun";
-    } else if (currentMonth == 7) {
-      letterMonth = "Jul";
-    } else if (currentMonth == 8) {
-      letterMonth = "Aug";
-    } else if (currentMonth == 9) {
-      letterMonth = "Sep";
-    } else if (currentMonth == 10) {
-      letterMonth = "Oct";
-    } else if (currentMonth == 11) {
-      letterMonth = "Nov";
-    } else if (currentMonth == 12) {
-      letterMonth = "Dec";
-    }
-
-    return letterMonth;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,22 +138,30 @@ class _home_noteState extends State<home_note> {
                                     children: [
                                       Row(
                                         children: [
-                                          Text(
-                                            "22",
-                                            style: TextStyle(
-                                                fontSize: 41,
-                                                fontWeight: FontWeight.w900,
-                                                color: Colors.black),
+                                          SizedBox(height: currentHight/16,width: currentWidth/7.5,
+                                            child: Center(
+                                              child: Text(
+                                                date[index].toString(),
+                                                style: TextStyle(
+                                                    fontSize: 41,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(
-                                            width: currentWidth / 27,
+                                            width: currentWidth / 58,
                                           ),
-                                          Text(
-                                            month(),
-                                            style: TextStyle(
-                                                fontSize: 28,
-                                                fontWeight: FontWeight.w800,
-                                                color: Colors.black),
+                                          Container(height: currentHight/18,width: currentWidth/7,
+                                            child: Center(
+                                              child: Text(
+                                                month[index],
+                                                style: TextStyle(
+                                                    fontSize: 28,
+                                                    fontWeight: FontWeight.w800,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -321,6 +303,9 @@ class _home_noteState extends State<home_note> {
                                     ),
                                     height: 41,
                                   ),
+                                  // FloatingActionButton(onPressed: () {
+                                  //   dateNow();
+                                  // },),
                                   FloatingActionButton(
                                     onPressed: () async {
                                     SharedPreferences prefData = await SharedPreferences.getInstance();
