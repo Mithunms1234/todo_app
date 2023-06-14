@@ -9,7 +9,7 @@ async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
- bool? logged = await sharedPreferences.getBool("looged");
+ bool? logged = sharedPreferences.getBool("looged");
   runApp( MyApp(islogged: logged,));
 }
 class MyApp extends StatelessWidget {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
       primarySwatch: Colors.green,
     ),
-      home: islogged == true ?  home_note():Entry(),
+      home: islogged == true ?   HomeNote(): Entry(),
     );
   }
 }

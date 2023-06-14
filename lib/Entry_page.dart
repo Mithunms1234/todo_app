@@ -32,7 +32,7 @@ var mWidth = MediaQuery.of(context).size.width;
           ),
           Expanded(flex: 3,
             child: Container(width: double.infinity,
-              color: const Color(0xffecd3cc),
+              color: const Color(0xffd3eaee),
               child: Column(mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(width: mWidth/1.5,
@@ -51,7 +51,7 @@ var mWidth = MediaQuery.of(context).size.width;
                        MaterialPageRoute(
                            builder: (context) {
                             return
-                              Login();
+                              const Login();
                            },)
                      );
 

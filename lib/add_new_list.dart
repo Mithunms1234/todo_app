@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Note_Home.dart';
@@ -21,7 +20,6 @@ class _AddEditState extends State<AddEdit> {
   void initState() { //to run this functions at the starting of this page
     super.initState();
     monthNow();
-    // print(".............$shared_pref");
   }
 
   var letterMonth;
@@ -33,21 +31,22 @@ class _AddEditState extends State<AddEdit> {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     letterMonthD = monthNames[currentMonth.month];
     DateTime currentDate = DateTime.now();
-    int DatesD = currentDate.day;
+    int dataD = currentDate.day;
     letterMonth = letterMonthD;
-    dates = DatesD;
+    dates = dataD;
   }
 
   save()async
   {
     SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
-    var id =await sharedPreferences.getString("id");  //sharedpreference get data
+    var id =sharedPreferences.getString("id");  //shared preference get data
     FirebaseFirestore.instance
         .collection("notes")
         .add({"Title": title.text, "Content": contents.text, "id": id, "date": dates, "month": letterMonth});
-    return  Navigator.push(
+    return
+      Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => home_note()),
+      MaterialPageRoute(builder: (context) => HomeNote()),
     );
   }
 
@@ -73,7 +72,7 @@ class _AddEditState extends State<AddEdit> {
                     ),
                   )),
               Center(
-              child: SingleChildScrollView(physics: BouncingScrollPhysics(),
+              child: SingleChildScrollView(physics: const BouncingScrollPhysics(),
                 child: SizedBox(
                   width: currentWidth/2.5,
                   child: Column(
@@ -84,8 +83,8 @@ class _AddEditState extends State<AddEdit> {
                         child: FloatingActionButton(elevation: 0,
                             onPressed: () {
                               Navigator.pop(context);
-                        },child: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white),
-                        backgroundColor: Colors.black),
+                        },
+                        backgroundColor: Colors.black, child: const Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white)),
                       ),
                       SizedBox(height: currentHeight/15,),
                       Container(
@@ -126,8 +125,8 @@ class _AddEditState extends State<AddEdit> {
                       FloatingActionButton(onPressed: ()  {
                           save();
 
-},
-                      child: Icon(Icons.save),backgroundColor: Colors.blueGrey,)
+},backgroundColor: Colors.blueGrey,
+                      child: const Icon(Icons.save),)
                     ],
                   ),
                 ),

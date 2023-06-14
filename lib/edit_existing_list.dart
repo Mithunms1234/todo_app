@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'Note_Home.dart';
@@ -31,9 +30,9 @@ class _EditListState extends State<EditList> {
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     letterMonthD = monthNames[currentMonth.month];
     DateTime currentDate = DateTime.now();
-    int DatesD = currentDate.day;
+    int datesD = currentDate.day;
     letterMonth = letterMonthD;
-    dates = DatesD;
+    dates = datesD;
   }
 
   void save()
@@ -41,7 +40,7 @@ class _EditListState extends State<EditList> {
      FirebaseFirestore.instance.collection("notes").doc(widget.id).update({"Title": title.text, "Content": contents.text,"date": dates, "month": letterMonth});
      Navigator.push(
          context,
-         MaterialPageRoute(builder: (context) => home_note())
+         MaterialPageRoute(builder: (context) => const HomeNote())
      );
   }
 
@@ -49,7 +48,6 @@ class _EditListState extends State<EditList> {
   void initState() {
     title.text = widget.title.toString();
     contents.text = widget.content.toString();
-    // TODO: implement initState
     super.initState();
     monthNow();
   }
@@ -77,7 +75,7 @@ class _EditListState extends State<EditList> {
                     ),
                   )),
               Center(
-                child: SingleChildScrollView(physics: BouncingScrollPhysics(),
+                child: SingleChildScrollView(physics: const BouncingScrollPhysics(),
                   child: SizedBox(
                     width: currentWidth/2.5,
                     child: Column(
@@ -88,8 +86,8 @@ class _EditListState extends State<EditList> {
                           child: FloatingActionButton(elevation: 0,
                               onPressed: () {
                                 Navigator.pop(context);
-                              },child: Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white),
-                              backgroundColor: Colors.black),
+                              },
+                              backgroundColor: Colors.black, child: const Icon(Icons.arrow_back_ios_new_rounded,color: Colors.white)),
                         ),
                         SizedBox(height: currentHeight/15,),
                         Container(
@@ -130,8 +128,8 @@ class _EditListState extends State<EditList> {
                         FloatingActionButton(onPressed: ()  {
                           save();
 
-                        },
-                          child: Icon(Icons.save),backgroundColor: Colors.blueGrey,)
+                        },backgroundColor: Colors.blueGrey,
+                          child: const Icon(Icons.save),)
                       ],
                     ),
                   ),

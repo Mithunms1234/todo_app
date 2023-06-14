@@ -6,17 +6,17 @@ import 'package:project_notes/add_new_list.dart';
 import 'Login_page.dart';
 import 'edit_existing_list.dart';
 
-class home_note extends StatefulWidget {
-  const home_note({Key? key}) : super(key: key);
+class HomeNote extends StatefulWidget {
+  const HomeNote({Key? key}) : super(key: key);
 
   @override
-  State<home_note> createState() => _home_noteState();
+  State<HomeNote> createState() => HomeNoteState();
 }
 
-class _home_noteState extends State<home_note> {
+class HomeNoteState extends State<HomeNote> {
   var colorsCard = [
-    Color(0xffC4DACF),
-    Color(0xff42995f),
+    const Color(0xffC4DACF),
+    const Color(0xff42995f),
   ];
   var colorsText = [
     Colors.black,
@@ -25,7 +25,7 @@ class _home_noteState extends State<home_note> {
 
   List<Map<String, dynamic>> loginList = [];
   List noteList = [];
-  var shared_pref; //sharedpref variable declaration
+  var sharedPref; //sharedpref variable declaration
 
   @override
   void initState() { //to run this functions at the starting of this page
@@ -47,14 +47,13 @@ class _home_noteState extends State<home_note> {
   async {
     var dataget = await FirebaseFirestore.instance.collection("notes").get();
     List documentIds = [];
-    dataget.docs.forEach((doc) {
+    for (var doc in dataget.docs) {
       documentIds.add(doc);
-    });
+    }
     // print(documentIds);
     setState(() {
       noteList = documentIds;
     });
-    // print("xxxxxxxxxxxxxxxxxxxxxxxxx${documentIds[0]["id"]}");
   }
 
   Future<void>
@@ -62,16 +61,16 @@ class _home_noteState extends State<home_note> {
   async {
     var dataget = await FirebaseFirestore.instance.collection("login").get();
     List<Map<String, dynamic>> documentIds = [];
-    dataget.docs.forEach((doc) {
+    for (var doc in dataget.docs) {
       documentIds.add(doc.data());
-    });
+    }
     //print(documentIds);
     setState(() {
       loginList = documentIds;
     });
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var id = sharedPreferences.getString("id");
-    shared_pref = id;
+    sharedPref = id;
   }
 
   List<String> title = [];
@@ -81,8 +80,8 @@ class _home_noteState extends State<home_note> {
   List<String> month = [];
 
   void titleContent() {
-    noteList.forEach((element) {
-      if (element.data()["id"] == shared_pref) {
+    for (var element in noteList) {
+      if (element.data()["id"] == sharedPref) {
         setState(() {
           title.add(element.data()["Title"]);
           content.add(element.data()["Content"]);
@@ -90,10 +89,8 @@ class _home_noteState extends State<home_note> {
           month.add(element.data()["month"]);
           id.add(element.id);
         });
-
-        print(".........................${element["date"]}");
       }
-    });
+    }
   }
 
 
@@ -133,7 +130,7 @@ class _home_noteState extends State<home_note> {
                                   color: colorsCard[index % colorsCard.length]),
                               child: Container(
                                   color: Colors.transparent,
-                                  margin: EdgeInsets.all(13),
+                                  margin: const EdgeInsets.all(13),
                                   child: Column(
                                     children: [
                                       Row(
@@ -142,7 +139,7 @@ class _home_noteState extends State<home_note> {
                                             child: Center(
                                               child: Text(
                                                 date[index].toString(),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 41,
                                                     fontWeight: FontWeight.w900,
                                                     color: Colors.black),
@@ -152,11 +149,11 @@ class _home_noteState extends State<home_note> {
                                           SizedBox(
                                             width: currentWidth / 58,
                                           ),
-                                          Container(height: currentHight/18,width: currentWidth/7,
+                                          SizedBox(height: currentHight/18,width: currentWidth/7,
                                             child: Center(
                                               child: Text(
                                                 month[index],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 28,
                                                     fontWeight: FontWeight.w800,
                                                     color: Colors.black),
@@ -167,7 +164,7 @@ class _home_noteState extends State<home_note> {
                                             padding: EdgeInsets.only(
                                                 left: currentWidth / 16),
                                             child: Container(
-                                              padding: EdgeInsets.all(14),
+                                              padding: const EdgeInsets.all(14),
                                               height: currentHight / 8.12,
                                               width: currentWidth / 2.6,
                                               decoration: BoxDecoration(
@@ -191,11 +188,11 @@ class _home_noteState extends State<home_note> {
                                                           scrollDirection:
                                                               Axis.horizontal,
                                                           padding:
-                                                              EdgeInsets.all(0),
+                                                              const EdgeInsets.all(0),
                                                           children: [
                                                             Text(
                                                               title[index],
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize: 21,
@@ -226,12 +223,12 @@ class _home_noteState extends State<home_note> {
                                                                           )),
                                                             );
                                                           },
-                                                          child: Icon(
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          child: const Icon(
                                                               Icons.edit,
                                                               color:
                                                                   Colors.black),
-                                                          backgroundColor:
-                                                              Colors.white,
                                                         ),
                                                       )
                                                     ],
@@ -248,10 +245,10 @@ class _home_noteState extends State<home_note> {
                                                                 .circular(5)),
                                                     child: ListView(
                                                         padding:
-                                                            EdgeInsets.all(5),
+                                                            const EdgeInsets.all(5),
                                                         children: [
                                                           Text(content[index],
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 14,
                                                                   color: Colors
                                                                       .white)),
@@ -287,42 +284,25 @@ class _home_noteState extends State<home_note> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(
-                                    child: FloatingActionButton(
-                                      onPressed: () {
-                                        Navigator.pop(
-                                          context,
-                                        );
-                                      },
-                                      child: Icon(
-                                          Icons.arrow_back_ios_new_rounded,
-                                           size: 21),
-                                      elevation: 0,
-                                      backgroundColor: Colors.transparent,
-                                      heroTag: "yy",
-                                    ),
-                                    height: 41,
-                                  ),
-                                  // FloatingActionButton(onPressed: () {
-                                  //   dateNow();
-                                  // },),
                                   FloatingActionButton(
                                     onPressed: () async {
                                     SharedPreferences prefData = await SharedPreferences.getInstance();
                                     await prefData.clear();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder:
-                                              (context) =>
-                                              Login()),
-                                    );
+                                    {
+                                      Future.delayed(Duration.zero, () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (_) => const Login()),
+                                        );
+                                      });
+                                    }
+
                                     },
-                                    child: Icon(
-                                      Icons.logout,
-                                    ),
                                     elevation: 0,
                                     backgroundColor: Colors.transparent,
+                                    child: const Icon(
+                                      Icons.logout,
+                                    ),
                                   )
                                 ],
                               ),
@@ -347,15 +327,15 @@ class _home_noteState extends State<home_note> {
                 ],
               )),
           FloatingActionButton(
-            heroTag: "dghhhhhhhhhhdfdhd f",
+            heroTag: "dghhhhhhhhhhdfdhdf",
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddEdit()),
+                MaterialPageRoute(builder: (context) => const AddEdit()),
               );
             },
-            child: Icon(Icons.add, size: 45),
             backgroundColor: Colors.black54,
+            child: const Icon(Icons.add, size: 45),
           )
         ],
       ),

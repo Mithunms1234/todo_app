@@ -13,26 +13,13 @@ class Login extends StatefulWidget {
 
 }
 class _LoginState extends State<Login> {
-  bool LoginSignUp = false;
+  bool loginSignUp = false;
 
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
   TextEditingController name = TextEditingController();
 
-  // getId()
-  // async {
-  //   var Dataget = await FirebaseFirestore.instance.collection("notes").get();
-  //   List<String> documentIds = [];
-  //   Dataget.docs.forEach((doc) {
-  //     documentIds.add(doc.id);
-  //   });
-  //
-  //   // var a = Dataget.docs[0].data();
-  //   print(documentIds);
-  //
-  // }
-
-  Check_name() {
+  checkName() {
     // print("........................................$name");
     if (name.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -42,11 +29,11 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.white,
       ));
     } else {
-      SignUp_FireAuth();
+      signUpFireAuth();
     }
   }
 
-  void Login_fireAuth() async {
+  void loginFireAuth() async {
     try {
    var login =    await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
@@ -55,12 +42,12 @@ class _LoginState extends State<Login> {
    SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
    await sharedPreferences.setString("id", login.user!.uid);
    await sharedPreferences.setBool("looged", true);
-   print(login);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => home_note())
-      );
+   Future.delayed(Duration.zero, () {
+     Navigator.push(
+       context,
+       MaterialPageRoute(builder: (_) => const HomeNote()),
+     );
+   });
     } on FirebaseAuthException catch (e) {
       String error = e.toString();
       if (error.contains("Given String is empty or null")) {
@@ -92,20 +79,19 @@ class _LoginState extends State<Login> {
     }
   }
 var SignId ;
-  SignUp_FireAuth() async {
+  signUpFireAuth() async {
     try {
     var sighupId =  await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email.text, password: pass.text);
-     var details =  await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("login").add({"email": email.text,"name": name.text,"id":sighupId.user!.uid} );
 
         SignId  = sighupId.user!.uid;
     SharedPreferences sharedPreferences =await  SharedPreferences.getInstance();
     await sharedPreferences.setString("id", SignId);
     await sharedPreferences.setBool("looged", true);
-        print("...............................................${sighupId.user!.uid}");
       setState(() {
-        LoginSignUp = false;
+        loginSignUp = false;
       });
     } on FirebaseAuthException catch (e) {
       String error = e.toString();
@@ -196,7 +182,7 @@ var SignId ;
                     children: [
                       Column(
                         children: [
-                          LoginSignUp != true
+                          loginSignUp != true
                               ? Text("Welcome Back",
                                   style: GoogleFonts.montserrat(
                                       fontSize: 40,
@@ -210,7 +196,7 @@ var SignId ;
                           const SizedBox(
                             height: 5,
                           ),
-                          LoginSignUp != true
+                          loginSignUp != true
                               ? Text("Login to your account",
                                   style: GoogleFonts.montserrat(
                                       fontSize: 20,
@@ -229,7 +215,7 @@ var SignId ;
               ),
               Expanded(
                   flex: 4,
-                  child: LoginSignUp != true
+                  child: loginSignUp != true
                       ?
 
                       //..........................login...........................
@@ -391,11 +377,11 @@ var SignId ;
                         child:
                         FloatingActionButton.extended(
                           onPressed: () {
-                            LoginSignUp != false
-                                ? Check_name()
-                                : Login_fireAuth();
+                            loginSignUp != false
+                                ? checkName()
+                                : loginFireAuth();
                           },
-                          label: LoginSignUp != true
+                          label: loginSignUp != true
                               ? Text("Login",
                                   style: GoogleFonts.montserrat(
                                       fontSize: 20,
@@ -412,26 +398,26 @@ var SignId ;
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          LoginSignUp != true
+                          loginSignUp != true
                               ? const Text("don't have account?",
                                   style: TextStyle(color: Colors.grey))
                               : const Text("already have an account?",
                                   style: TextStyle(color: Colors.grey)),
-                          LoginSignUp != true
+                          loginSignUp != true
                               ? TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      LoginSignUp = true;
+                                      loginSignUp = true;
                                     });
                                   },
-                                  child: Text("Sign up"))
+                                  child: const Text("Sign up"))
                               : TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      LoginSignUp = false;
+                                      loginSignUp = false;
                                     });
                                   },
-                                  child: Text("Login")),
+                                  child: const Text("Login")),
 
                         ],
                       ),
